@@ -9,11 +9,6 @@ namespace QYSDK
 {
     public class QYMain
     {
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern bool AllocConsole();//开启控制台
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        private static extern bool FreeConsole();//关闭控制台
 
         ///<summary>
         /// 插件基础信息在这里返回 //本函数【禁止】处理其他任何代码
@@ -39,7 +34,7 @@ namespace QYSDK
             QY.AuthCode = AuthCode;
             QY.ProtocolType = ProtocolType;
             
-            return 0;
+            return QY.EVENT_IGNORE;
         }
         ///<summary>
         /// Type=1001 启动
@@ -49,7 +44,7 @@ namespace QYSDK
         public static int _eventStartup()
         {
 
-            return 0;
+            return QY.EVENT_IGNORE;
 
         }
 
@@ -60,12 +55,10 @@ namespace QYSDK
         [DllExport(ExportName = nameof(_eventEnable), CallingConvention = CallingConvention.StdCall)]
         public static int _eventEnable()
         {
-            AllocConsole();
-            Console.WriteLine($"C# AuthCode:{QY.AuthCode}");
-            //ManagementCenter.Load();
-            // ManagementCenter.init();
 
-            return 0;
+
+
+            return QY.EVENT_IGNORE;
 
         }
 
@@ -77,7 +70,7 @@ namespace QYSDK
         public static int _eventDisable()
         {
 
-            return 0;
+            return QY.EVENT_IGNORE;
 
         }
         ///<summary>
@@ -87,8 +80,7 @@ namespace QYSDK
         [DllExport(ExportName = nameof(_eventExit), CallingConvention = CallingConvention.StdCall)]
         public static int _eventExit()
         {
-            FreeConsole();
-            return 0;
+            return QY.EVENT_IGNORE;
 
         }
         ///<summary>
@@ -111,7 +103,7 @@ namespace QYSDK
             Console.WriteLine($"接收到好友[{fromQQ}]的消息：{msg}");
             Console.WriteLine($"尝试发送消息给[{fromQQ}]");
             QY.sendFriendMsg(QQID, fromQQ, "C#测试");
-            return 0;
+            return QY.EVENT_IGNORE;
 
         }
 
